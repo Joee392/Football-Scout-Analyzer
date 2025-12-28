@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football Scout Analyzer</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="table.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="main-header">
+            <div class="logo-container">
+                <i class="fas fa-futbol logo-icon"></i>
+                <h1>Football Scout Analyzer</h1>
+                <p class="tagline">Analyze and compare player performance statistics</p>
+            </div>
+            
+            <div class="header-controls">
+                <div class="league-filters">
+                    <button class="league-btn active" data-league="all">All Leagues</button>
+                    <button class="league-btn" data-league="premier">Premier League</button>
+                    <button class="league-btn" data-league="la-liga">La Liga</button>
+                    <button class="league-btn" data-league="serie-a">Serie A</button>
+                    <button class="league-btn" data-league="bundesliga">Bundesliga</button>
+                    <button class="league-btn" data-league="ligue-1">Ligue 1</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <section class="search-section">
+                <div class="search-container">
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" 
+                               id="playerSearch" 
+                               class="search-input" 
+                               placeholder="Search players by name, team, or league...">
+                        <button id="clearSearch" class="clear-search-btn" aria-label="Clear search">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="sort-controls">
+                        <label for="sortBy">Sort by:</label>
+                        <select id="sortBy" class="sort-select">
+                        <option value="scoutScore">Scout Score (High to Low)</option> <option value="goals">Goals (High to Low)</option>
+                        <option value="assists">Assists (High to Low)</option>
+                        <option value="appearances">Appearances (High to Low)</option>
+                        <option value="name">Name (A to Z)</option>
+                        <option value="team">Team (A to Z)</option>
+                            </select>
+                    </div>
+                </div>
+                
+                <div class="stats-summary">
+                    <div class="stat-card">
+                        <span class="stat-label">Total Players</span>
+                        <span id="totalPlayers" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Avg. Scout Score</span>
+                        <span id="avgScore" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Top Scorer</span>
+                        <span id="topScorer" class="stat-value">-</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Top Assister</span>
+                        <span id="topAssister" class="stat-value">-</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="players-section">
+                <div class="section-header">
+                    <h2 id="playersCount">Showing <span id="visibleCount">0</span> players</h2>
+                    <div class="view-controls">
+                        <button id="tableViewBtn" class="view-btn active" data-view="table">
+                            <i class="fas fa-table"></i> Table
+                        </button>
+                        <button id="cardViewBtn" class="view-btn" data-view="cards">
+                            <i class="fas fa-th-large"></i> Cards
+                        </button>
+                    </div>
+                </div>
+
+                <div id="playersContainer">
+
+                    <div id="tableView" class="view-content active">
+                        <div class="table-container">
+                            <table id="playersTable" class="players-table">
+                                <thead>
+                                    <tr>
+                                        <th data-sort="rank">#</th>
+                                        <th data-sort="name">Player Name</th>
+                                        <th data-sort="team">Team</th>
+                                        <th data-sort="league">League</th>
+                                        <th data-sort="appearances">Apps</th>
+                                        <th data-sort="goals">Goals</th>
+                                        <th data-sort="assists">Assists</th>
+                                        <th data-sort="score">Scout Score</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="playersTableBody">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="cardView" class="view-content">
+                        <div class="cards-container" id="playersCards">
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pagination-controls">
+                    <button id="prevPage" class="pagination-btn" disabled>
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </button>
+                    <div class="page-info">
+                        Page <span id="currentPage">1</span> of <span id="totalPages">1</span>
+                    </div>
+                    <button id="nextPage" class="pagination-btn">
+                        Next <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </section>
+
+            <section class="comparison-section">
+                <h3>
+                    <i class="fas fa-chart-bar"></i>
+                    Player Comparison
+                    <span id="comparisonCount" class="badge">0</span>
+                </h3>
+                <div id="comparisonContainer" class="comparison-container">
+                    <p class="empty-message">Select players to compare by clicking the "Compare" button</p>
+                </div>
+                <div class="comparison-actions">
+                    <button id="clearComparison" class="btn-secondary" disabled>
+                        Clear Comparison
+                    </button>
+                    <button id="exportData" class="btn-primary">
+                        <i class="fas fa-download"></i> Export Data
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <footer class="main-footer">
+            <p>Football Scout Analyzer &copy; <span id="currentYear"></span></p>
+            <p class="data-source">Data sourced from top 5 European leagues: Premier League, La Liga, Serie A, Bundesliga, Ligue 1</p>
+        </footer>
+    </div>
+
+    <div id="playerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalPlayerName">Player Details</h3>
+                <button id="closeModal" class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body" id="modalPlayerDetails">
+
+            </div>
+        </div>
+    </div>
+
+    <script src="players.js"></script>
+    <script src="dom-manipulator.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
